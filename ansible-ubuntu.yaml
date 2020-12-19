@@ -1,0 +1,7 @@
+---
+
+- name: Enforce default configuration for Ubuntu Desktop machine
+  gather_facts: false
+  hosts: localhost
+  roles:
+    - chrony

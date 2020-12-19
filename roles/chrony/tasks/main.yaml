@@ -1,0 +1,24 @@
+---
+
+- name: install pkg
+  apt:
+    name: chrony
+    state: present
+
+- name: Make sure no server/pool is configured
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    state: absent
+    regexp: '^\s*(server|pool)\ '
+
+- name: Add server
+  lineinfile:
+    path: /etc/chrony/chrony.conf
+    state: present
+    line: 'server {{ item }} iburst'
+  with_items: "{{ ntp_servers }}"
+
+- name: restart pkg
+  service:
+    name: chrony
+    state: restarted
